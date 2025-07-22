@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+TEAM_FILE=".team_members"
+
+if [[ "$1" == "-h" ]]; then
+    echo "Usage: gcommit \"Commit message\" [initials... | -a]"
+    echo "  e.g. gcommit \"Refactor controller and aggregator\" ab ef"
+    echo "  e.g. gcommit \"Initial commit\" -a   # include all team members"
+    exit 0
+fi
+
+if [[ ! -f "$TEAM_FILE" ]]; then
+    echo "Error: $TEAM_FILE not found."
+    exit 1
+fi
+
+# Extract commit message
+COMMIT_MSG="$1"
+shift
+
+# Load team members into parallel arrays
+INITIALS_LIST=()
+AUTHORS_LIST=()
+while IFS='=' read -r key value; do
+    key=$(echo "$key" | tr '[:upper:]' '[:lower:]' | xargs | tr -d '\r')
+    value=$(echo "$value" | xargs | tr -d '\r')
+    [[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
+
+    INITIALS_LIST+=("$key")
+    AUTHORS_LIST+=("$value")
+done < "$TEAM_FILE"
+
+# Build co-author lines
+CO_AUTHOR_LINES=""
+
+if [[ "$1" == "-a" ]]; then
+    echo "Adding all team members..."
+    for ((i=0; i<${#AUTHORS_LIST[@]}; i++)); do
+        CO_AUTHOR_LINES+=$'\n'"Co-authored-by: ${AUTHORS_LIST[$i]}"
+    done
+else
+    for initial in "$@"; do
+        key=$(echo "$initial" | tr '[:upper:]' '[:lower:]')
+
+        found=false
+        for ((i=0; i<${#INITIALS_LIST[@]}; i++)); do
+            if [[ "$key" == "${INITIALS_LIST[$i]}" ]]; then
+                CO_AUTHOR_LINES+=$'\n'"Co-authored-by: ${AUTHORS_LIST[$i]}"
+                found=true
+                break
+            fi
+        done
+
+        if [[ $found == false ]]; then
+            echo "Warning: Unknown initials '$initial' — skipping"
+        fi
+    done
+fi
+
+# Create commit with co-authors in proper Git format
+#echo "$COMMIT_MSG$CO_AUTHOR_LINES"
+git commit -m "$COMMIT_MSG$CO_AUTHOR_LINES"
