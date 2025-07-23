@@ -58,5 +58,5 @@ else
 fi
 
 # Create commit with co-authors in proper Git format
-#echo "$COMMIT_MSG$CO_AUTHOR_LINES"
+# echo "$COMMIT_MSG$CO_AUTHOR_LINES"
 git commit -m "$COMMIT_MSG$CO_AUTHOR_LINES"
