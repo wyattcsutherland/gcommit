@@ -22,7 +22,7 @@ Ideal for ensemble-mob-team programming.
 2. Make it executable:
 
    ```bash
-   chmod 755 gcommit
+   chmod +x gcommit
    ```
 
 3. Create a `.team_members` file in the same directory as the script.
@@ -153,7 +153,7 @@ To use `gcommit` anywhere:
 2. Ensure it’s executable:
 
    ```bash
-   sudo chmod 755 /usr/local/bin/gcommit
+   sudo chmod +x /usr/local/bin/gcommit
    ```
 
 3. Now you can run `gcommit` in any Git repository.
