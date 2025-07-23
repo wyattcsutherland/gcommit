@@ -3,9 +3,10 @@
 TEAM_FILE=".team_members"
 
 if [[ "$1" == "-h" ]]; then
-    echo "Usage: gcommit \"Commit message\" [initials... | -a]"
-    echo "  e.g. gcommit \"Refactor controller and aggregator\" ab ef"
+    echo "Usage: gcommit \"Commit message\" [initials... | -a | -d]"
+    echo "  e.g. gcommit \"Refactor controller\" ab ef"
     echo "  e.g. gcommit \"Initial commit\" -a   # include all team members"
+    echo "  e.g. gcommit \"Test commit\" -d     # debug (implies -a, no commit)"
     exit 0
 fi
 
@@ -17,6 +18,23 @@ fi
 # Extract commit message
 COMMIT_MSG="$1"
 shift
+
+if [[ -z "$COMMIT_MSG" || "$COMMIT_MSG" == -* ]]; then
+    echo "Error: Commit message is required and must be the first argument."
+    echo "Usage: gcommit \"Commit message\" [initials... | -a | -d]"
+    exit 1
+fi
+
+# Detect debug mode (must be after shifting commit message)
+DEBUG_MODE=false
+for arg in "$@"; do
+    if [[ "$arg" == "-d" ]]; then
+        DEBUG_MODE=true
+        # Treat debug as if -a was passed
+        set -- -a
+        break
+    fi
+done
 
 # Load team members into parallel arrays
 INITIALS_LIST=()
@@ -52,11 +70,32 @@ else
         done
 
         if [[ $found == false ]]; then
-            echo "Warning: Unknown initials '$initial' — skipping"
+            echo -e "\033[33mWarning: Unknown initials '$initial' — skipping\033[0m"
         fi
     done
 fi
 
 # Create commit with co-authors in proper Git format
 # echo "$COMMIT_MSG$CO_AUTHOR_LINES"
-git commit -m "$COMMIT_MSG$CO_AUTHOR_LINES"
+# Deduplicate co-author lines
+CO_AUTHOR_LINES=$(echo "$CO_AUTHOR_LINES" | awk '!seen[$0]++')
+
+if $DEBUG_MODE; then
+    echo "==== DEBUG MODE (no commit) ===="
+    echo "Team members in $TEAM_FILE:"
+    for ((i=0; i<${#INITIALS_LIST[@]}; i++)); do
+        echo "  ${INITIALS_LIST[$i]} = ${AUTHORS_LIST[$i]}"
+    done
+    echo
+    echo "Commit message to be used:"
+    echo "--------------------------"
+    echo "git commit -m \"$COMMIT_MSG\""
+    echo "$CO_AUTHOR_LINES"
+    echo "============================"
+else
+    if [[ -n "$CO_AUTHOR_LINES" ]]; then
+        git commit -m "$COMMIT_MSG" -m "$CO_AUTHOR_LINES"
+    else
+        git commit -m "$COMMIT_MSG"
+    fi
+fi
