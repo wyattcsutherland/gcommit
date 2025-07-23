@@ -1,4 +1,4 @@
-✅ README.md Draft
+✅ README.md
 
 # gcommit
 
@@ -22,7 +22,7 @@ Instead of manually typing each co-author, `gcommit` uses a `.team_members` file
 1. **Save the script** as `gcommit`  
 2. Make it executable:
    ```bash
-   chmod +x gcommit
+   chmod 755 gcommit
 
 (Optional) Move it to a directory in your $PATH so you can run it anywhere:
 mv gcommit /usr/local/bin/
@@ -31,46 +31,47 @@ mv gcommit /usr/local/bin/
 
 📂 .team_members Format
 The .team_members file should be placed in the root of your repository and use this format:
-# Initials = Name <email>
-# Initials are case-insensitive
+
+## Initials are case-insensitive
 ab=Alice Bob <alice@example.com>   
 cd=Charlie Delta <charlie@example.com>
 ef=Ellen Fox <ellen@example.com>
 
 
-🚀 Usage
-Basic Commit
-gcommit "Fix typo in README"
+🚀 Usage  
+Basic Commit  
+gcommit "Fix typo in README"  
 This creates a normal Git commit (no co-authors).
 
-Commit with Specific Co-Authors
-gcommit "Refactor layout system" ab ef
-Adds:
-Co-authored-by: Alice Bob <alice@example.com>
+Commit with Specific Co-Authors  
+gcommit "Refactor layout system" ab ef  
+Adds:  
+Co-authored-by: Alice Bob <alice@example.com>  
 Co-authored-by: Ellen Fox <ellen@example.com>
 
-Commit with All Team Members
-gcommit "Initial project setup" -a
-Adds all members listed in .team_members file.
+Commit with All Team Members  
+gcommit "Initial project setup" -a  
+Adds:  
+all members listed in .team_members file.
 
 
-⚠️ Requirements
-Git installed and configured
+⚠️ Requirements  
+Git installed and configured   
 Bash 3.x or higher (works with older macOS default bash)
 
 
-📝 Notes
-The script commits directly with git commit -m.
+📝 Notes  
+The script commits directly with git commit -m.   
 If an initial is not recognized, a warning will be printed, but the commit will still proceed.
 
 
-🔮 Planned Improvements
-Suggest similar initials when an unknown one is entered (Did you mean...?).
+🔮 Planned Improvements  
+Suggest similar initials when an unknown one is entered (Did you mean...?).   
 Allow combining -a with specific initials (-a ab).
 
 
-👤 Author
-Created by Wyatt Sutherland
+👤 Author  
+Created by Wyatt Sutherland  
 Feel free to modify and share.
 
 
