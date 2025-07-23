@@ -29,7 +29,7 @@ mv gcommit /usr/local/bin/
 
 ---
 
-📂 .team_members Format
+## 📂 .team_members Format
 The .team_members file should be placed in the root of your repository and use this format:
 
 ## Initials are case-insensitive
@@ -38,39 +38,39 @@ cd=Charlie Delta <charlie@example.com>
 ef=Ellen Fox <ellen@example.com>
 
 
-🚀 Usage  
-Basic Commit  
+## 🚀 Usage  
+### Basic Commit  
 gcommit "Fix typo in README"  
 This creates a normal Git commit (no co-authors).
 
-Commit with Specific Co-Authors  
+### Commit with Specific Co-Authors  
 gcommit "Refactor layout system" ab ef  
 Adds:  
 Co-authored-by: Alice Bob <alice@example.com>  
 Co-authored-by: Ellen Fox <ellen@example.com>
 
-Commit with All Team Members  
+### Commit with All Team Members  
 gcommit "Initial project setup" -a  
 Adds:  
 all members listed in .team_members file.
 
 
-⚠️ Requirements  
+## ⚠️ Requirements  
 Git installed and configured   
 Bash 3.x or higher (works with older macOS default bash)
 
 
-📝 Notes  
+## 📝 Notes  
 The script commits directly with git commit -m.   
 If an initial is not recognized, a warning will be printed, but the commit will still proceed.
 
 
-🔮 Planned Improvements  
+## 🔮 Planned Improvements  
 Suggest similar initials when an unknown one is entered (Did you mean...?).   
 Allow combining -a with specific initials (-a ab).
 
 
-👤 Author  
+## 👤 Author  
 Created by Wyatt Sutherland  
 Feel free to modify and share.
 
