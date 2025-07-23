@@ -1,8 +1,8 @@
 # gcommit
 
 A lightweight Bash script to simplify Git commits with [co-authors](https://docs.github.com/en/github/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors).  
-It reads a `.team_members` file and automatically appends properly formatted `Co-authored-by:` lines to your commit messages.
-Ideal for pair or mob programming.
+It reads a `.team_members` file and automatically appends properly formatted `Co-authored-by:` lines to your commit messages.  
+Ideal for pair or mob programming.  
 
 ---
 
