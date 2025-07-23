@@ -21,7 +21,7 @@ It reads a `.team_members` file and automatically appends properly formatted `Co
 2. Make it executable:
 
    ```bash
-   chmod +x gcommit
+   chmod 755 gcommit
    ```
 
 3. Create a `.team_members` file in the same directory as the script.
